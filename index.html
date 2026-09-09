@@ -1,1 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>DAGER Photo Lab by Noir</title>
+
+  <meta
+    name="description"
+    content="Film development, scanning, printing, and negative care by DAGER Photo Lab."
+  >
+
+  <style>
+    :root {
+      --black: #090a0b;
+      --cream: #eee9df;
+      --gold: #b89662;
+      --grey: #98938b;
+      --line: rgba(238, 233, 223, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+    }
+
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--black);
+      color: var(--cream);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* FILM GRAIN */
+
+    .film-grain {
+      position: fixed;
+      inset: -80%;
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0.055;
+
+      background-image: url(
+        "data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.8'/%3E%3C/svg%3E"
+      );
+
+      animation: filmGrain 0.18s steps(2) infinite;
+    }
+
+    @keyframes filmGrain {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      25% {
+        transform: translate(2%, -3%);
+      }
+
+      50% {
+        transform: translate(-4%, 2%);
+      }
+
+      75% {
+        transform: translate(3%, 4%);
+      }
+
+      100% {
+        transform: translate(-2%, -4%);
+      }
+    }
+
+    /* INTRO */
+
+    .intro {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+
+      display: grid;
+      place-content: center;
+
+      background: #080909;
+      text-align: center;
+
+      transition:
+        opacity 0.8s ease,
+        visibility 0.8s ease;
+    }
+
+    .intro.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .intro-frame {
+      width: min(390px, 78vw);
+
+      display: flex;
+      justify-content: space-between;
+
+      padding: 9px 2px;
+
+      border-top: 1px solid #46443f;
+      border-bottom: 1px solid #46443f;
+
+      color: #777269;
+
+      font-family: monospace;
+      font-size: 10px;
+      letter-spacing: 0.24em;
+    }
+
+    .intro-logo {
+      margin-right: -0.16em;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(54px, 10vw, 104px);
+      line-height: 1;
+      letter-spacing: 0.16em;
+
+      animation: developLogo 1.1s ease both;
+    }
+
+    .intro-description {
+      color: var(--gold);
+      font-size: 8px;
+      letter-spacing: 0.5em;
+    }
+
+    @keyframes developLogo {
+      from {
+        opacity: 0;
+        filter: blur(18px);
+        letter-spacing: 0.35em;
+      }
+
+      to {
+        opacity: 1;
+        filter: blur(0);
+        letter-spacing: 0.16em;
+      }
+    }
+
+    /* HEADER */
+
+    .site-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 50;
+
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 26px 5vw;
+
+      border-bottom: 1px solid var(--line);
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+
+      color: #c3bdb2;
+      text-decoration: none;
+
+      font-size: 7px;
+      letter-spacing: 0.38em;
+    }
+
+    .logo strong {
+      margin-bottom: 5px;
+
+      color: var(--cream);
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: 0.16em;
+    }
+
+    .navigation {
+      display: flex;
+      gap: 34px;
+    }
+
+    .navigation a {
+      position: relative;
+
+      text-decoration: none;
+      text-transform: uppercase;
+
+      font-size: 9px;
+      letter-spacing: 0.25em;
+    }
+
+    .navigation a::after {
+      content: "";
+
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+
+      width: 100%;
+      height: 1px;
+
+      background: var(--gold);
+
+      transform: scaleX(0);
+      transform-origin: left;
+
+      transition: transform 0.3s ease;
+    }
+
+    .navigation a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .menu-button {
+      display: none;
+    }
+
+    /* HERO */
+
+    .hero {
+      position: relative;
+
+      min-height: 100svh;
+
+      display: flex;
+      align-items: flex-end;
+
+      padding: 150px 7vw 10vh;
+
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(5, 6, 7, 0.94),
+          rgba(5, 6, 7, 0.64) 50%,
+          rgba(5, 6, 7, 0.15)
+        ),
+        linear-gradient(
+          0deg,
+          #08090a,
+          transparent 38%
+        );
+    }
+
+    .hero-image {
+      position: absolute;
+      inset: 0;
+
+      /*
+        Upload canon-camera.jpg beside index.html.
+        You may replace this filename with another photograph.
+      */
+
+      background-image: url("canon-camera.jpg");
+      background-position: 70% center;
+      background-size: cover;
+      background-repeat: no-repeat;
+
+      filter: grayscale(1) contrast(1.2);
+
+      transform: scale(1.06);
+
+      animation: heroZoom 12s ease-out forwards;
+    }
+
+    @keyframes heroZoom {
+      to {
+        transform: scale(1);
+      }
+    }
+
+    .shutter-flash {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+
+      background: white;
+      opacity: 0;
+
+      pointer-events: none;
+
+      animation: shutterFlash 0.8s 0.9s ease-out;
+    }
+
+    @keyframes shutterFlash {
+      0%,
+      100% {
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 0.5;
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+
+      max-width: 920px;
+    }
+
+    .small-title,
+    .section-number {
+      color: var(--gold);
+
+      text-transform: uppercase;
+
+      font-size: 9px;
+      letter-spacing: 0.38em;
+    }
+
+    h1,
+    h2,
+    blockquote {
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 400;
+    }
+
+    h1 {
+      margin: 25px 0 35px;
+
+      font-size: clamp(58px, 8.2vw, 132px);
+      line-height: 0.88;
+      letter-spacing: -0.045em;
+    }
+
+    em {
+      color: var(--gold);
+      font-weight: 400;
+    }
+
+    .hero-description {
+      max-width: 430px;
+
+      color: #bbb5aa;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .discover-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+
+      margin-top: 34px;
+      padding-bottom: 10px;
+
+      border-bottom: 1px solid var(--gold);
+
+      text-decoration: none;
+      text-transform: uppercase;
+
+      font-size: 9px;
+      letter-spacing: 0.22em;
+    }
+
+    .frame-counter {
+      position: absolute;
+      right: 5vw;
+      bottom: 10vh;
+      z-index: 3;
+
+      writing-mode: vertical-rl;
+
+      color: #a29b91;
+
+      font-family: monospace;
+      font-size: 8px;
+      letter-spacing: 0.3em;
+    }
+
+    .frame-counter strong {
+      color: var(--gold);
+    }
+
+    /* SCROLL ANIMATION */
+
+    .reveal {
+      opacity: 0;
+
+      transform: translateY(35px);
+
+      transition:
+        opacity 0.9s ease,
+        transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* PHILOSOPHY */
+
+    .philosophy {
+      display: grid;
+      grid-template-columns: 1fr 3fr 1.2fr;
+      align-items: start;
+      gap: 5vw;
+
+      padding: 15vh 10vw;
+
+      background: var(--cream);
+      color: var(--black);
+    }
+
+    blockquote {
+      margin: 0;
+
+      font-size: clamp(34px, 4.4vw, 72px);
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+    }
+
+    .philosophy-description {
+      color: #5a554e;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    /* SERVICES */
+
+    .services,
+    .selected-work {
+      padding: 14vh 7vw;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 4vw;
+
+      margin-bottom: 9vh;
+    }
+
+    .section-heading h2,
+    .formats h2,
+    .why h2 {
+      margin: 0;
+
+      font-size: clamp(42px, 5.8vw, 86px);
+      line-height: 0.98;
+      letter-spacing: -0.035em;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      border-top: 1px solid var(--line);
+      border-left: 1px solid var(--line);
+    }
+
+    .service-card {
+      min-height: 340px;
+
+      display: flex;
+      flex-direction: column;
+
+      padding: 32px;
+
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+
+      transition:
+        background 0.4s ease,
+        color 0.4s ease,
+        transform 0.4s ease;
+    }
+
+    .service-card:hover {
+      background: var(--cream);
+      color: var(--black);
+
+      transform: translateY(-6px);
+    }
+
+    .service-card-number {
+      color: var(--gold);
+
+      font-family: monospace;
+      font-size: 9px;
+    }
+
+    .service-icon {
+      align-self: flex-end;
+
+      color: var(--gold);
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 30px;
+    }
+
+    .service-card h3 {
+      margin: auto 0 14px;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 1.05;
+    }
+
+    .service-card p {
+      max-width: 290px;
+      margin-bottom: 0;
+
+      color: var(--grey);
+
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    /* FORMATS */
+
+    .formats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10vw;
+
+      padding: 14vh 8vw;
+
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    .formats .section-number {
+      color: #51422e;
+    }
+
+    .format-list {
+      border-top: 1px solid rgba(10, 11, 12, 0.28);
+    }
+
+    .format-row {
+      display: grid;
+      grid-template-columns: 50px 1fr auto;
+      align-items: center;
+
+      padding: 24px 4px;
+
+      border-bottom: 1px solid rgba(10, 11, 12, 0.28);
+
+      transition: padding 0.3s ease;
+    }
+
+    .format-row:hover {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .format-row span {
+      font-family: monospace;
+      font-size: 9px;
+    }
+
+    .format-row p {
+      margin: 0;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 25px;
+    }
+
+    /* GALLERY */
+
+    .contact-sheet {
+      display: grid;
+      grid-template-columns: 1.1fr 0.8fr 1.1fr;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .photo {
+      margin: 0;
+      padding: 12px;
+
+      overflow: hidden;
+
+      background: #17191a;
+    }
+
+    .photo img {
+      display: block;
+
+      width: 100%;
+      height: 520px;
+
+      object-fit: cover;
+
+      filter:
+        grayscale(1)
+        brightness(0.62)
+        contrast(1.35);
+
+      transition:
+        filter 1.2s ease,
+        transform 1.4s ease;
+    }
+
+    .photo:nth-child(1) img {
+      object-position: left center;
+    }
+
+    .photo:nth-child(2) img {
+      height: 430px;
+      object-position: center;
+    }
+
+    .photo:nth-child(3) img {
+      object-position: right center;
+    }
+
+    .photo:hover img {
+      filter:
+        grayscale(0)
+        brightness(1)
+        contrast(1);
+
+      transform: scale(1.025);
+    }
+
+    figcaption {
+      display: flex;
+      justify-content: space-between;
+
+      padding: 12px 2px 1px;
+
+      color: #858078;
+
+      font-family: monospace;
+      font-size: 8px;
+      letter-spacing: 0.18em;
+    }
+
+    .gallery-note {
+      margin-top: 36px;
+
+      color: #8f8980;
+
+      text-align: center;
+
+      font-size: 10px;
+      letter-spacing: 0.14em;
+    }
+
+    /* WHY DAGER */
+
+    .why {
+      display: grid;
+      grid-template-columns: 0.5fr 1.5fr 1fr;
+      align-items: center;
+      gap: 6vw;
+
+      margin: 4vh 7vw 14vh;
+      padding: 9vh 7vw;
+
+      border: 1px solid var(--line);
+    }
+
+    .why-mark {
+      color: var(--gold);
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 120px;
+      line-height: 0.7;
+    }
+
+    .why > p {
+      color: #99938a;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    /* CONTACT */
+
+    .contact {
+      padding: 15vh 7vw;
+
+      background: var(--cream);
+      color: var(--black);
+
+      text-align: center;
+    }
+
+    .contact h2 {
+      margin: 30px 0;
+
+      font-size: clamp(58px, 9vw, 135px);
+      line-height: 0.88;
+      letter-spacing: -0.05em;
+    }
+
+    .contact-description {
+      color: #68625b;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 17px;
+    }
+
+    .contact-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 22px;
+
+      margin-top: 35px;
+      padding: 22px 30px;
+
+      background: var(--black);
+      color: var(--cream);
+
+      text-decoration: none;
+      text-transform: uppercase;
+
+      font-size: 9px;
+      letter-spacing: 0.25em;
+
+      transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease;
+    }
+
+    .contact-button:hover {
+      background: var(--gold);
+      color: var(--black);
+
+      transform: translateY(-3px);
+    }
+
+    /* FOOTER */
+
+    footer {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: end;
+
+      padding: 44px 5vw;
+
+      color: #77736c;
+
+      font-size: 9px;
+      letter-spacing: 0.16em;
+    }
+
+    .footer-logo {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-logo strong {
+      color: var(--cream);
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+    }
+
+    footer p:nth-child(2) {
+      text-align: center;
+    }
+
+    footer p:last-child {
+      text-align: right;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 800px) {
+      .site-header {
+        padding: 20px 22px;
+      }
+
+      .menu-button {
+        position: relative;
+        z-index: 60;
+
+        width: 38px;
+        height: 38px;
+
+        display: block;
+
+        border: 0;
+        background: transparent;
+
+        cursor: pointer;
+      }
+
+      .menu-button span {
+        position: absolute;
+        top: 15px;
+        left: 7px;
+
+        width: 24px;
+        height: 1px;
+
+        background: var(--cream);
+
+        transition:
+          transform 0.3s ease,
+          top 0.3s ease;
+      }
+
+      .menu-button span:last-child {
+        top: 23px;
+      }
+
+      .menu-button.is-open span:first-child {
+        top: 19px;
+        transform: rotate(45deg);
+      }
+
+      .menu-button.is-open span:last-child {
+        top: 19px;
+        transform: rotate(-45deg);
+      }
+
+      .navigation {
+        position: fixed;
+        inset: 0;
+        z-index: 55;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+
+        background: #090a0b;
+
+        opacity: 0;
+        visibility: hidden;
+
+        transition:
+          opacity 0.35s ease,
+          visibility 0.35s ease;
+      }
+
+      .navigation.is-open {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .navigation a {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 34px;
+        text-transform: none;
+      }
+
+      .hero {
+        padding: 140px 24px 70px;
+      }
+
+      .hero-image {
+        background-position: 62% center;
+      }
+
+      .hero::after {
+        background:
+          linear-gradient(
+            0deg,
+            rgba(5, 6, 7, 0.98),
+            rgba(5, 6, 7, 0.35) 80%
+          );
+      }
+
+      .frame-counter {
+        display: none;
+      }
+
+      .philosophy {
+        grid-template-columns: 1fr;
+        padding: 100px 24px;
+      }
+
+      .services,
+      .selected-work {
+        padding: 100px 24px;
+      }
+
+      .section-heading {
+        display: block;
+      }
+
+      .section-heading h2 {
+        margin-top: 24px;
+      }
+
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .service-card {
+        min-height: 280px;
+      }
+
+      .formats {
+        grid-template-columns: 1fr;
+        padding: 100px 24px;
+      }
+
+      .contact-sheet {
+        display: flex;
+
+        overflow-x: auto;
+
+        scroll-snap-type: x mandatory;
+      }
+
+      .photo {
+        min-width: 82vw;
+        scroll-snap-align: center;
+      }
+
+      .photo img,
+      .photo:nth-child(2) img {
+        height: 440px;
+      }
+
+      .why {
+        grid-template-columns: 1fr;
+
+        margin: 0 24px 100px;
+        padding: 70px 28px;
+      }
+
+      .why-mark {
+        font-size: 80px;
+      }
+
+      .contact {
+        padding: 110px 24px;
+      }
+
+      footer {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+
+      footer p:nth-child(2),
+      footer p:last-child {
+        text-align: left;
+      }
+    }
+
+    /* ACCESSIBILITY */
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .film-grain,
+      .hero-image,
+      .shutter-flash,
+      .intro-logo {
+        animation: none;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .intro {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- OPENING ANIMATION -->
+
+  <div class="intro" aria-hidden="true">
+    <div class="intro-frame">
+      <span>35</span>
+      <span>DAGER</span>
+      <span>01</span>
+    </div>
+
+    <div class="intro-logo">DAGER</div>
+    <p class="intro-description">IMAGE DEVELOPING</p>
+  </div>
+
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- HEADER -->
+
+  <header class="site-header">
+    <a class="logo" href="#top" aria-label="DAGER Photo Lab home">
+      <strong>DAGER</strong>
+      <span>PHOTO LAB · BY NOIR</span>
+    </a>
+
+    <nav class="navigation" id="navigation">
+      <a href="#services">Services</a>
+      <a href="#formats">Formats</a>
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <button
+      class="menu-button"
+      id="menuButton"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+    >
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <main>
+    <!-- HERO -->
+
+    <section class="hero" id="top">
+      <div class="hero-image" aria-hidden="true"></div>
+      <div class="shutter-flash" aria-hidden="true"></div>
+
+      <div class="hero-content">
+        <p class="small-title">
+          Independent analog photo laboratory
+        </p>
+
+        <h1>
+          Film developed<br>
+          with <em>intention.</em>
+        </h1>
+
+        <p class="hero-description">
+          Development, scanning, and printing for photographs
+          made slowly.
+        </p>
+
+        <a class="discover-link" href="#services">
+          Discover our services ↓
+        </a>
+      </div>
+
+      <div class="frame-counter">
+        FRAME <strong>01</strong> / 36
+      </div>
+    </section>
+
+    <!-- PHILOSOPHY -->
+
+    <section class="philosophy reveal" id="about">
+      <p class="section-number">
+        01 — Philosophy
+      </p>
+
+      <blockquote>
+        “The photograph is not finished when the shutter closes.
+        In the darkroom, it begins to <em>speak.</em>”
+      </blockquote>
+
+      <p class="philosophy-description">
+        DAGER is a service-focused photo laboratory by Noir.
+        We treat every roll as a collection of choices—light,
+        timing, chemistry, and patience.
+      </p>
+    </section>
+
+    <!-- SERVICES -->
+
+    <section class="services" id="services">
+      <div class="section-heading reveal">
+        <p class="section-number">
+          02 — Services
+        </p>
+
+        <h2>
+          From exposed film<br>
+          to lasting image.
+        </h2>
+      </div>
+
+      <div class="service-grid">
+        <article class="service-card reveal">
+          <span class="service-card-number">01</span>
+          <span class="service-icon">◉</span>
+
+          <h3>Colour development</h3>
+
+          <p>
+            Careful C-41 processing with consistent temperature
+            and timing.
+          </p>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-card-number">02</span>
+          <span class="service-icon">◉</span>
+
+          <h3>Black &amp; white</h3>
+
+          <p>
+            Hand-developed to preserve shadow detail, texture,
+            and character.
+          </p>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-card-number">03</span>
+          <span class="service-icon">◉</span>
+
+          <h3>High-resolution scans</h3>
+
+          <p>
+            Clean, balanced digital files made for sharing,
+            archiving, and printing.
+          </p>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-card-number">04</span>
+          <span class="service-icon">◉</span>
+
+          <h3>Personal colour work</h3>
+
+          <p>
+            Thoughtful colour and density corrections—never
+            a generic preset.
+          </p>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-card-number">05</span>
+          <span class="service-icon">◉</span>
+
+          <h3>Fine prints</h3>
+
+          <p>
+            Selected photographs printed with attention to tone,
+            paper, and scale.
+          </p>
+        </article>
+
+        <article class="service-card reveal">
+          <span class="service-card-number">06</span>
+          <span class="service-icon">◉</span>
+
+          <h3>Negative care</h3>
+
+          <p>
+            Film cut, sleeved, and prepared for safe long-term
+            preservation.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- FORMATS -->
+
+    <section class="formats reveal" id="formats">
+      <div>
+        <p class="section-number">
+          03 — Formats
+        </p>
+
+        <h2>
+          The film you love.<br>
+          The care it deserves.
+        </h2>
+      </div>
+
+      <div class="format-list">
+        <div class="format-row">
+          <span>01</span>
+          <p>35 mm colour</p>
+          <b>↗</b>
+        </div>
+
+        <div class="format-row">
+          <span>02</span>
+          <p>35 mm B&amp;W</p>
+          <b>↗</b>
+        </div>
+
+        <div class="format-row">
+          <span>03</span>
+          <p>120 colour</p>
+          <b>↗</b>
+        </div>
+
+        <div class="format-row">
+          <span>04</span>
+          <p>120 B&amp;W</p>
+          <b>↗</b>
+        </div>
+      </div>
+    </section>
+
+    <!-- SELECTED WORK -->
+
+    <section class="selected-work" id="work">
+      <div class="section-heading reveal">
+        <p class="section-number">
+          04 — Selected work
+        </p>
+
+        <h2>
+          Light, memory,<br>
+          and silver.
+        </h2>
+      </div>
+
+      <div class="contact-sheet">
+        <figure class="photo reveal">
+          <img
+            src="canon-camera.jpg"
+            alt="Analog camera photographed against a dark background"
+          >
+
+          <figcaption>
+            <span>DAGER / 001</span>
+            <span>35 MM</span>
+          </figcaption>
+        </figure>
+
+        <figure class="photo reveal">
+          <img
+            src="canon-camera.jpg"
+            alt="Detailed view of an analog camera"
+          >
+
+          <figcaption>
+            <span>DAGER / 002</span>
+            <span>35 MM</span>
+          </figcaption>
+        </figure>
+
+        <figure class="photo reveal">
+          <img
+            src="canon-camera.jpg"
+            alt="Vintage camera photography study"
+          >
+
+          <figcaption>
+            <span>DAGER / 003</span>
+            <span>35 MM</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <p class="gallery-note reveal">
+        Hover over each frame to watch it develop.
+      </p>
+    </section>
+
+    <!-- WHY DAGER -->
+
+    <section class="why reveal">
+      <div class="why-mark">D</div>
+
+      <div>
+        <p class="section-number">
+          Why DAGER
+        </p>
+
+        <h2>
+          No automated look.<br>
+          No rushed decisions.
+        </h2>
+      </div>
+
+      <p>
+        We believe a laboratory should understand the feeling
+        behind an image. Our work is quiet, precise, and shaped
+        around the character of your film.
+      </p>
+    </section>
+
+    <!-- CONTACT -->
+
+    <section class="contact" id="contact">
+      <p class="section-number reveal">
+        05 — Contact
+      </p>
+
+      <h2 class="reveal">
+        Let your film<br>
+        <em>come to light.</em>
+      </h2>
+
+      <p class="contact-description reveal">
+        Questions about formats, scanning, or your next roll?
+      </p>
+
+      <!-- Replace the email address below with your own email -->
+
+      <a
+        class="contact-button reveal"
+        href="mailto:hello@dagerlab.com"
+      >
+        Talk to the lab ↗
+      </a>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="footer-logo">
+      <strong>DAGER</strong>
+      <span>PHOTO LAB · BY NOIR</span>
+    </div>
+
+    <p>
+      Film development · Scanning · Printing
+    </p>
+
+    <p>
+      © 2026 DAGER
+    </p>
+  </footer>
+
+  <script>
+    /*
+      Opening darkroom animation
+    */
+
+    const intro = document.querySelector(".intro");
+
+    window.setTimeout(function () {
+      intro.classList.add("is-hidden");
+    }, 1200);
+
+    /*
+      Reveal sections when scrolling
+    */
+
+    const revealObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.12
+      }
+    );
+
+    document.querySelectorAll(".reveal").forEach(function (element) {
+      revealObserver.observe(element);
+    });
+
+    /*
+      Mobile navigation
+    */
+
+    const menuButton = document.getElementById("menuButton");
+    const navigation = document.getElementById("navigation");
+    const navigationLinks = navigation.querySelectorAll("a");
+
+    function closeMenu() {
+      navigation.classList.remove("is-open");
+      menuButton.classList.remove("is-open");
+      document.body.classList.remove("menu-open");
+
+      menuButton.setAttribute("aria-expanded", "false");
+      menuButton.setAttribute("aria-label", "Open menu");
+    }
+
+    menuButton.addEventListener("click", function () {
+      const menuIsOpen = navigation.classList.toggle("is-open");
+
+      menuButton.classList.toggle("is-open", menuIsOpen);
+      document.body.classList.toggle("menu-open", menuIsOpen);
+
+      menuButton.setAttribute(
+        "aria-expanded",
+        menuIsOpen ? "true" : "false"
+      );
+
+      menuButton.setAttribute(
+        "aria-label",
+        menuIsOpen ? "Close menu" : "Open menu"
+      );
+    });
+
+    navigationLinks.forEach(function (link) {
+      link.addEventListener("click", closeMenu);
+    });
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 800) {
+        closeMenu();
+      }
+    });
+  </script>
+</body>
+</html>
