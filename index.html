@@ -1,22 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta name="description" content="Film development, scanning, printing, and negative care by DAGER Photo Lab.">
   <title>DAGER Photo Lab by Noir</title>
-
-  <meta
-    name="description"
-    content="Film development, scanning, printing, and negative care by DAGER Photo Lab."
-  >
 
   <style>
     :root {
-      --black: #090a0b;
-      --cream: #eee9df;
+      --ink: #0a0b0c;
+      --paper: #eee9df;
       --gold: #b89662;
-      --grey: #98938b;
       --line: rgba(238, 233, 223, 0.18);
     }
 
@@ -26,19 +20,15 @@
 
     html {
       scroll-behavior: smooth;
-      background: var(--black);
+      background: var(--ink);
     }
 
     body {
       margin: 0;
       overflow-x: hidden;
-      background: var(--black);
-      color: var(--cream);
+      background: var(--ink);
+      color: var(--paper);
       font-family: Arial, Helvetica, sans-serif;
-    }
-
-    body.menu-open {
-      overflow: hidden;
     }
 
     a {
@@ -47,21 +37,21 @@
 
     /* FILM GRAIN */
 
-    .film-grain {
+    .grain {
       position: fixed;
       inset: -80%;
-      z-index: 100;
+      z-index: 50;
       pointer-events: none;
       opacity: 0.055;
 
       background-image: url(
-        "data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.8'/%3E%3C/svg%3E"
+        "data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E"
       );
 
-      animation: filmGrain 0.18s steps(2) infinite;
+      animation: grain 0.18s steps(2) infinite;
     }
 
-    @keyframes filmGrain {
+    @keyframes grain {
       0% {
         transform: translate(0, 0);
       }
@@ -83,12 +73,12 @@
       }
     }
 
-    /* INTRO */
+    /* OPENING ANIMATION */
 
     .intro {
       position: fixed;
       inset: 0;
-      z-index: 200;
+      z-index: 100;
 
       display: grid;
       place-content: center;
@@ -97,11 +87,11 @@
       text-align: center;
 
       transition:
-        opacity 0.8s ease,
-        visibility 0.8s ease;
+        opacity 0.7s ease,
+        visibility 0.7s ease;
     }
 
-    .intro.is-hidden {
+    .intro.done {
       opacity: 0;
       visibility: hidden;
     }
@@ -112,7 +102,7 @@
       display: flex;
       justify-content: space-between;
 
-      padding: 9px 2px;
+      padding: 8px 2px;
 
       border-top: 1px solid #46443f;
       border-bottom: 1px solid #46443f;
@@ -124,7 +114,7 @@
       letter-spacing: 0.24em;
     }
 
-    .intro-logo {
+    .intro-word {
       margin-right: -0.16em;
 
       font-family: Georgia, "Times New Roman", serif;
@@ -132,16 +122,16 @@
       line-height: 1;
       letter-spacing: 0.16em;
 
-      animation: developLogo 1.1s ease both;
+      animation: develop 1.1s both;
     }
 
-    .intro-description {
+    .intro p {
       color: var(--gold);
       font-size: 8px;
       letter-spacing: 0.5em;
     }
 
-    @keyframes developLogo {
+    @keyframes develop {
       from {
         opacity: 0;
         filter: blur(18px);
@@ -157,11 +147,11 @@
 
     /* HEADER */
 
-    .site-header {
+    header {
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 50;
+      z-index: 20;
 
       width: 100%;
 
@@ -174,7 +164,7 @@
       border-bottom: 1px solid var(--line);
     }
 
-    .logo {
+    .wordmark {
       display: flex;
       flex-direction: column;
 
@@ -185,10 +175,10 @@
       letter-spacing: 0.38em;
     }
 
-    .logo strong {
+    .wordmark strong {
       margin-bottom: 5px;
 
-      color: var(--cream);
+      color: var(--paper);
 
       font-family: Georgia, "Times New Roman", serif;
       font-size: 25px;
@@ -197,22 +187,22 @@
       letter-spacing: 0.16em;
     }
 
-    .navigation {
+    nav {
       display: flex;
-      gap: 34px;
+      gap: 26px;
     }
 
-    .navigation a {
+    nav a {
       position: relative;
 
       text-decoration: none;
       text-transform: uppercase;
 
-      font-size: 9px;
-      letter-spacing: 0.25em;
+      font-size: 8px;
+      letter-spacing: 0.22em;
     }
 
-    .navigation a::after {
+    nav a::after {
       content: "";
 
       position: absolute;
@@ -230,11 +220,11 @@
       transition: transform 0.3s ease;
     }
 
-    .navigation a:hover::after {
+    nav a:hover::after {
       transform: scaleX(1);
     }
 
-    .menu-button {
+    .menu {
       display: none;
     }
 
@@ -262,14 +252,14 @@
       background:
         linear-gradient(
           90deg,
-          rgba(5, 6, 7, 0.94),
-          rgba(5, 6, 7, 0.64) 50%,
-          rgba(5, 6, 7, 0.15)
+          rgba(5, 6, 7, 0.92),
+          rgba(5, 6, 7, 0.6) 50%,
+          rgba(5, 6, 7, 0.16)
         ),
         linear-gradient(
           0deg,
           #08090a,
-          transparent 38%
+          transparent 35%
         );
     }
 
@@ -277,30 +267,25 @@
       position: absolute;
       inset: 0;
 
-      /*
-        Upload canon-camera.jpg beside index.html.
-        You may replace this filename with another photograph.
-      */
-
-      background-image: url("canon-camera.jpg");
-      background-position: 70% center;
-      background-size: cover;
-      background-repeat: no-repeat;
+      background:
+        url("canon-camera.jpg")
+        70% center / cover
+        no-repeat;
 
       filter: grayscale(1) contrast(1.2);
 
       transform: scale(1.06);
 
-      animation: heroZoom 12s ease-out forwards;
+      animation: zoom 12s ease-out both;
     }
 
-    @keyframes heroZoom {
+    @keyframes zoom {
       to {
         transform: scale(1);
       }
     }
 
-    .shutter-flash {
+    .flash {
       position: absolute;
       inset: 0;
       z-index: 2;
@@ -310,10 +295,10 @@
 
       pointer-events: none;
 
-      animation: shutterFlash 0.8s 0.9s ease-out;
+      animation: flash 0.8s 0.9s ease-out;
     }
 
-    @keyframes shutterFlash {
+    @keyframes flash {
       0%,
       100% {
         opacity: 0;
@@ -331,8 +316,8 @@
       max-width: 920px;
     }
 
-    .small-title,
-    .section-number {
+    .eyebrow,
+    .section-no {
       color: var(--gold);
 
       text-transform: uppercase;
@@ -361,7 +346,7 @@
       font-weight: 400;
     }
 
-    .hero-description {
+    .hero-copy {
       max-width: 430px;
 
       color: #bbb5aa;
@@ -371,7 +356,7 @@
       line-height: 1.7;
     }
 
-    .discover-link {
+    .text-link {
       display: inline-flex;
       align-items: center;
       gap: 14px;
@@ -388,7 +373,7 @@
       letter-spacing: 0.22em;
     }
 
-    .frame-counter {
+    .frame-count {
       position: absolute;
       right: 5vw;
       bottom: 10vh;
@@ -403,30 +388,30 @@
       letter-spacing: 0.3em;
     }
 
-    .frame-counter strong {
+    .frame-count strong {
       color: var(--gold);
     }
 
-    /* SCROLL ANIMATION */
+    /* SCROLL REVEAL */
 
     .reveal {
       opacity: 0;
 
-      transform: translateY(35px);
+      transform: translateY(34px);
 
       transition:
         opacity 0.9s ease,
         transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
     }
 
-    .reveal.is-visible {
+    .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
     /* PHILOSOPHY */
 
-    .philosophy {
+    .manifesto {
       display: grid;
       grid-template-columns: 1fr 3fr 1.2fr;
       align-items: start;
@@ -434,8 +419,8 @@
 
       padding: 15vh 10vw;
 
-      background: var(--cream);
-      color: var(--black);
+      background: var(--paper);
+      color: var(--ink);
     }
 
     blockquote {
@@ -446,7 +431,7 @@
       letter-spacing: -0.035em;
     }
 
-    .philosophy-description {
+    .manifesto-copy {
       color: #5a554e;
 
       font-family: Georgia, "Times New Roman", serif;
@@ -454,10 +439,276 @@
       line-height: 1.8;
     }
 
+    /* LOUIS DAGUERRE */
+
+    .daguerre-story {
+      display: grid;
+      grid-template-columns: 0.6fr 1.4fr;
+      gap: 8vw;
+
+      padding: 15vh 9vw;
+
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .history-index {
+      min-height: 540px;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      padding-left: 25px;
+
+      border-left: 1px solid var(--gold);
+
+      color: #777269;
+
+      font-family: monospace;
+      font-size: 9px;
+      letter-spacing: 0.2em;
+    }
+
+    .history-index > strong {
+      color: var(--gold);
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 72px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .daguerre-real-portrait {
+      position: relative;
+
+      margin: 34px 0 24px;
+
+      overflow: hidden;
+
+      background: #171717;
+    }
+
+    .daguerre-real-portrait::after {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      border: 1px solid rgba(184, 150, 98, 0.35);
+
+      pointer-events: none;
+    }
+
+    .daguerre-real-portrait img {
+      width: 100%;
+      height: 390px;
+
+      display: block;
+
+      object-fit: cover;
+
+      filter:
+        grayscale(1)
+        sepia(0.14)
+        contrast(1.12);
+
+      transition:
+        filter 1.2s ease,
+        transform 1.4s ease;
+    }
+
+    .daguerre-real-portrait:hover img {
+      filter:
+        grayscale(0.25)
+        sepia(0.2)
+        contrast(1.05);
+
+      transform: scale(1.025);
+    }
+
+    .portrait-credit {
+      line-height: 1.8;
+    }
+
+    .daguerre-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .daguerre-copy h2 {
+      margin: 28px 0 34px;
+
+      font-size: clamp(50px, 6.5vw, 102px);
+      line-height: 0.88;
+      letter-spacing: -0.05em;
+    }
+
+    .daguerre-name {
+      display: block;
+
+      margin-top: 17px;
+
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .daguerre-intro {
+      max-width: 760px;
+      margin: 0;
+
+      color: #b0aaa0;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .daguerre-timeline {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      margin-top: 62px;
+
+      border-top: 1px solid var(--line);
+    }
+
+    .daguerre-year {
+      padding: 24px 18px 0 0;
+    }
+
+    .daguerre-year strong {
+      display: block;
+
+      margin-bottom: 13px;
+
+      color: var(--gold);
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 28px;
+      font-weight: 400;
+    }
+
+    .daguerre-year span {
+      display: block;
+
+      max-width: 170px;
+
+      color: #7f7a72;
+
+      font-size: 10px;
+      line-height: 1.6;
+      letter-spacing: 0.08em;
+    }
+
+    .name-note {
+      margin-top: 52px;
+      padding-left: 24px;
+
+      border-left: 1px solid var(--gold);
+
+      color: #98938b;
+
+      font-size: 11px;
+      line-height: 1.8;
+      letter-spacing: 0.08em;
+    }
+
+    /* CINEMATIC PHOTO */
+
+    .legacy-image {
+      position: relative;
+
+      min-height: min(82vw, 920px);
+
+      overflow: hidden;
+
+      background: #151515;
+    }
+
+    .legacy-image img {
+      position: absolute;
+      inset: 0;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      filter:
+        grayscale(1)
+        contrast(1.08)
+        brightness(0.72);
+
+      transform: scale(1.04);
+
+      transition:
+        filter 1.4s ease,
+        transform 1.8s ease;
+    }
+
+    .legacy-image:hover img {
+      filter:
+        grayscale(0.18)
+        contrast(1.02)
+        brightness(0.88);
+
+      transform: scale(1);
+    }
+
+    .legacy-image::after {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      background:
+        linear-gradient(
+          0deg,
+          rgba(7, 8, 9, 0.88),
+          transparent 58%
+        );
+    }
+
+    .legacy-copy {
+      position: absolute;
+      right: 7vw;
+      bottom: 7vw;
+      left: 7vw;
+      z-index: 2;
+
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .legacy-copy h2 {
+      max-width: 850px;
+      margin: 18px 0 0;
+
+      font-size: clamp(52px, 8vw, 126px);
+      line-height: 0.86;
+      letter-spacing: -0.05em;
+    }
+
+    .legacy-copy > span {
+      padding-bottom: 10px;
+
+      color: #c0b9af;
+
+      writing-mode: vertical-rl;
+
+      font-family: monospace;
+      font-size: 9px;
+      letter-spacing: 0.25em;
+    }
+
     /* SERVICES */
 
     .services,
-    .selected-work {
+    .work {
       padding: 14vh 7vw;
     }
 
@@ -505,23 +756,22 @@
     }
 
     .service-card:hover {
-      background: var(--cream);
-      color: var(--black);
+      background: var(--paper);
+      color: var(--ink);
 
       transform: translateY(-6px);
     }
 
-    .service-card-number {
+    .service-card > span {
       color: var(--gold);
 
       font-family: monospace;
       font-size: 9px;
     }
 
-    .service-icon {
-      align-self: flex-end;
-
+    .service-card .icon {
       color: var(--gold);
+      text-align: right;
 
       font-family: Georgia, "Times New Roman", serif;
       font-size: 30px;
@@ -538,12 +788,268 @@
 
     .service-card p {
       max-width: 290px;
-      margin-bottom: 0;
 
-      color: var(--grey);
+      color: #969087;
 
       font-size: 12px;
       line-height: 1.7;
+    }
+
+    /* DEVELOPING PROCESS */
+
+    .developing-process {
+      position: relative;
+
+      padding: 13vh 0 15vh;
+
+      overflow: hidden;
+
+      background: #070809;
+
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .process-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+
+      margin-bottom: 75px;
+      padding: 0 7vw;
+    }
+
+    .process-heading h2 {
+      margin: 20px 0 0;
+
+      font-size: clamp(48px, 6.4vw, 96px);
+      line-height: 0.9;
+      letter-spacing: -0.05em;
+    }
+
+    .process-heading > p {
+      max-width: 360px;
+      margin: 0;
+
+      color: #928c83;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .chemical-stage {
+      position: relative;
+
+      padding: 78px 0;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          180deg,
+          #0c1113,
+          #111a1d 48%,
+          #07090a
+        );
+
+      border-top: 1px solid rgba(184, 150, 98, 0.23);
+      border-bottom: 1px solid rgba(184, 150, 98, 0.23);
+    }
+
+    /* WATER REFLECTION */
+
+    .chemical-stage::before {
+      content: "";
+
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+
+      pointer-events: none;
+
+      background:
+        repeating-radial-gradient(
+          ellipse at 50% 130%,
+          transparent 0 30px,
+          rgba(189, 220, 220, 0.055) 32px 34px,
+          transparent 36px 64px
+        );
+
+      background-size: 110% 52px;
+
+      animation: waterMove 5s linear infinite;
+    }
+
+    .chemical-stage::after {
+      content: "CHEMICAL BATH / IMAGE DEVELOPING / 20°C";
+
+      position: absolute;
+      right: 7vw;
+      bottom: 20px;
+      z-index: 5;
+
+      color: #6d7777;
+
+      font-family: monospace;
+      font-size: 8px;
+      letter-spacing: 0.28em;
+    }
+
+    .film-window {
+      position: relative;
+      z-index: 2;
+
+      overflow: hidden;
+
+      transform: rotate(-1.3deg);
+
+      filter:
+        drop-shadow(
+          0 20px 28px rgba(0, 0, 0, 0.6)
+        );
+    }
+
+    .film-track {
+      width: max-content;
+
+      display: flex;
+      gap: 12px;
+
+      padding: 31px 12px;
+
+      background-color: #151515;
+
+      background-image:
+        radial-gradient(
+          circle,
+          #050505 0 4px,
+          transparent 4.5px
+        ),
+        radial-gradient(
+          circle,
+          #050505 0 4px,
+          transparent 4.5px
+        );
+
+      background-size: 30px 16px;
+
+      background-position:
+        0 5px,
+        15px calc(100% - 5px);
+
+      background-repeat: repeat-x;
+
+      animation: filmScroll 22s linear infinite;
+    }
+
+    .film-frame {
+      position: relative;
+
+      width: 300px;
+      height: 205px;
+      flex: none;
+
+      overflow: hidden;
+
+      border: 2px solid #050505;
+      background: #222;
+    }
+
+    .film-frame img {
+      width: 100%;
+      height: 100%;
+
+      display: block;
+
+      object-fit: cover;
+
+      filter:
+        grayscale(1)
+        brightness(0.28)
+        contrast(1.5);
+
+      animation:
+        imageDevelop
+        8s
+        ease-in-out
+        infinite
+        alternate;
+    }
+
+    .film-frame:nth-child(2n) img {
+      animation-delay: -2.4s;
+    }
+
+    .film-frame:nth-child(3n) img {
+      animation-delay: -4.8s;
+    }
+
+    .film-number {
+      position: absolute;
+      right: 8px;
+      bottom: 6px;
+
+      color: rgba(238, 233, 223, 0.65);
+
+      font-family: monospace;
+      font-size: 8px;
+      letter-spacing: 0.18em;
+
+      text-shadow: 0 1px 3px black;
+    }
+
+    .process-status {
+      display: flex;
+      justify-content: space-between;
+
+      padding: 38px 7vw 0;
+
+      color: #706c65;
+
+      font-family: monospace;
+      font-size: 8px;
+      letter-spacing: 0.24em;
+    }
+
+    .process-status strong {
+      color: var(--gold);
+      font-weight: 400;
+    }
+
+    @keyframes filmScroll {
+      to {
+        transform: translateX(calc(-50% - 6px));
+      }
+    }
+
+    @keyframes waterMove {
+      to {
+        background-position: 110px 52px;
+      }
+    }
+
+    @keyframes imageDevelop {
+      0%,
+      18% {
+        opacity: 0.55;
+
+        filter:
+          grayscale(1)
+          brightness(0.22)
+          contrast(1.6);
+      }
+
+      75%,
+      100% {
+        opacity: 1;
+
+        filter:
+          grayscale(0.15)
+          brightness(0.92)
+          contrast(1.05);
+      }
     }
 
     /* FORMATS */
@@ -556,10 +1062,10 @@
       padding: 14vh 8vw;
 
       background: var(--gold);
-      color: var(--black);
+      color: var(--ink);
     }
 
-    .formats .section-number {
+    .formats .section-no {
       color: #51422e;
     }
 
@@ -567,7 +1073,7 @@
       border-top: 1px solid rgba(10, 11, 12, 0.28);
     }
 
-    .format-row {
+    .format-list div {
       display: grid;
       grid-template-columns: 50px 1fr auto;
       align-items: center;
@@ -575,21 +1081,14 @@
       padding: 24px 4px;
 
       border-bottom: 1px solid rgba(10, 11, 12, 0.28);
-
-      transition: padding 0.3s ease;
     }
 
-    .format-row:hover {
-      padding-left: 12px;
-      padding-right: 12px;
-    }
-
-    .format-row span {
+    .format-list span {
       font-family: monospace;
       font-size: 9px;
     }
 
-    .format-row p {
+    .format-list p {
       margin: 0;
 
       font-family: Georgia, "Times New Roman", serif;
@@ -615,10 +1114,10 @@
     }
 
     .photo img {
-      display: block;
-
       width: 100%;
       height: 520px;
+
+      display: block;
 
       object-fit: cover;
 
@@ -667,7 +1166,7 @@
       letter-spacing: 0.18em;
     }
 
-    .gallery-note {
+    .work-note {
       margin-top: 36px;
 
       color: #8f8980;
@@ -713,8 +1212,8 @@
     .contact {
       padding: 15vh 7vw;
 
-      background: var(--cream);
-      color: var(--black);
+      background: var(--paper);
+      color: var(--ink);
 
       text-align: center;
     }
@@ -727,7 +1226,7 @@
       letter-spacing: -0.05em;
     }
 
-    .contact-description {
+    .contact > p:not(.section-no) {
       color: #68625b;
 
       font-family: Georgia, "Times New Roman", serif;
@@ -742,8 +1241,8 @@
       margin-top: 35px;
       padding: 22px 30px;
 
-      background: var(--black);
-      color: var(--cream);
+      background: var(--ink);
+      color: var(--paper);
 
       text-decoration: none;
       text-transform: uppercase;
@@ -759,7 +1258,7 @@
 
     .contact-button:hover {
       background: var(--gold);
-      color: var(--black);
+      color: var(--ink);
 
       transform: translateY(-3px);
     }
@@ -779,13 +1278,13 @@
       letter-spacing: 0.16em;
     }
 
-    .footer-logo {
+    footer div {
       display: flex;
       flex-direction: column;
     }
 
-    .footer-logo strong {
-      color: var(--cream);
+    footer strong {
+      color: var(--paper);
 
       font-family: Georgia, "Times New Roman", serif;
       font-size: 28px;
@@ -804,13 +1303,13 @@
     /* MOBILE */
 
     @media (max-width: 800px) {
-      .site-header {
+      header {
         padding: 20px 22px;
       }
 
-      .menu-button {
+      .menu {
         position: relative;
-        z-index: 60;
+        z-index: 30;
 
         width: 38px;
         height: 38px;
@@ -819,11 +1318,9 @@
 
         border: 0;
         background: transparent;
-
-        cursor: pointer;
       }
 
-      .menu-button span {
+      .menu span {
         position: absolute;
         top: 15px;
         left: 7px;
@@ -831,37 +1328,21 @@
         width: 24px;
         height: 1px;
 
-        background: var(--cream);
-
-        transition:
-          transform 0.3s ease,
-          top 0.3s ease;
+        background: var(--paper);
       }
 
-      .menu-button span:last-child {
+      .menu span:last-child {
         top: 23px;
       }
 
-      .menu-button.is-open span:first-child {
-        top: 19px;
-        transform: rotate(45deg);
-      }
-
-      .menu-button.is-open span:last-child {
-        top: 19px;
-        transform: rotate(-45deg);
-      }
-
-      .navigation {
+      nav {
         position: fixed;
         inset: 0;
-        z-index: 55;
 
-        display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 30px;
+        gap: 25px;
 
         background: #090a0b;
 
@@ -873,14 +1354,14 @@
           visibility 0.35s ease;
       }
 
-      .navigation.is-open {
+      nav.open {
         opacity: 1;
         visibility: visible;
       }
 
-      .navigation a {
+      nav a {
         font-family: Georgia, "Times New Roman", serif;
-        font-size: 34px;
+        font-size: 30px;
         text-transform: none;
       }
 
@@ -896,22 +1377,66 @@
         background:
           linear-gradient(
             0deg,
-            rgba(5, 6, 7, 0.98),
+            rgba(5, 6, 7, 0.97),
             rgba(5, 6, 7, 0.35) 80%
           );
       }
 
-      .frame-counter {
+      .frame-count {
         display: none;
       }
 
-      .philosophy {
+      .manifesto {
         grid-template-columns: 1fr;
         padding: 100px 24px;
       }
 
+      .daguerre-story {
+        grid-template-columns: 1fr;
+        padding: 100px 24px;
+      }
+
+      .history-index {
+        min-height: 130px;
+      }
+
+      .daguerre-real-portrait img {
+        height: 460px;
+      }
+
+      .daguerre-timeline {
+        grid-template-columns: 1fr;
+      }
+
+      .daguerre-year {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+
+        padding: 20px 0;
+
+        border-bottom: 1px solid var(--line);
+      }
+
+      .daguerre-year span {
+        max-width: none;
+      }
+
+      .legacy-image {
+        min-height: 720px;
+      }
+
+      .legacy-copy {
+        right: 24px;
+        bottom: 35px;
+        left: 24px;
+      }
+
+      .legacy-copy > span {
+        display: none;
+      }
+
       .services,
-      .selected-work {
+      .work {
         padding: 100px 24px;
       }
 
@@ -929,6 +1454,35 @@
 
       .service-card {
         min-height: 280px;
+      }
+
+      .process-heading {
+        display: block;
+
+        margin-bottom: 50px;
+        padding: 0 24px;
+      }
+
+      .process-heading > p {
+        margin-top: 30px;
+      }
+
+      .chemical-stage {
+        padding: 58px 0;
+      }
+
+      .film-frame {
+        width: 235px;
+        height: 165px;
+      }
+
+      .process-status {
+        padding-right: 24px;
+        padding-left: 24px;
+      }
+
+      .process-status span:nth-child(2) {
+        display: none;
       }
 
       .formats {
@@ -980,18 +1534,27 @@
       }
     }
 
-    /* ACCESSIBILITY */
+    /* REDUCED MOTION */
 
     @media (prefers-reduced-motion: reduce) {
       html {
         scroll-behavior: auto;
       }
 
-      .film-grain,
+      .grain,
       .hero-image,
-      .shutter-flash,
-      .intro-logo {
+      .flash,
+      .intro-word,
+      .film-track,
+      .chemical-stage::before,
+      .film-frame img {
         animation: none;
+      }
+
+      .film-frame img {
+        filter:
+          grayscale(0.2)
+          brightness(0.9);
       }
 
       .reveal {
@@ -1017,31 +1580,32 @@
       <span>01</span>
     </div>
 
-    <div class="intro-logo">DAGER</div>
-    <p class="intro-description">IMAGE DEVELOPING</p>
+    <div class="intro-word">DAGER</div>
+    <p>IMAGE DEVELOPING</p>
   </div>
 
-  <div class="film-grain" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
 
   <!-- HEADER -->
 
-  <header class="site-header">
-    <a class="logo" href="#top" aria-label="DAGER Photo Lab home">
+  <header>
+    <a class="wordmark" href="#top">
       <strong>DAGER</strong>
       <span>PHOTO LAB · BY NOIR</span>
     </a>
 
-    <nav class="navigation" id="navigation">
+    <nav id="navigation">
       <a href="#services">Services</a>
+      <a href="#process">Process</a>
       <a href="#formats">Formats</a>
+      <a href="#history">History</a>
       <a href="#work">Work</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
 
     <button
-      class="menu-button"
-      id="menuButton"
+      class="menu"
       type="button"
       aria-label="Open menu"
       aria-expanded="false"
@@ -1055,11 +1619,11 @@
     <!-- HERO -->
 
     <section class="hero" id="top">
-      <div class="hero-image" aria-hidden="true"></div>
-      <div class="shutter-flash" aria-hidden="true"></div>
+      <div class="hero-image"></div>
+      <div class="flash"></div>
 
       <div class="hero-content">
-        <p class="small-title">
+        <p class="eyebrow">
           Independent analog photo laboratory
         </p>
 
@@ -1068,25 +1632,25 @@
           with <em>intention.</em>
         </h1>
 
-        <p class="hero-description">
+        <p class="hero-copy">
           Development, scanning, and printing for photographs
           made slowly.
         </p>
 
-        <a class="discover-link" href="#services">
+        <a class="text-link" href="#services">
           Discover our services ↓
         </a>
       </div>
 
-      <div class="frame-counter">
+      <div class="frame-count">
         FRAME <strong>01</strong> / 36
       </div>
     </section>
 
     <!-- PHILOSOPHY -->
 
-    <section class="philosophy reveal" id="about">
-      <p class="section-number">
+    <section class="manifesto reveal" id="about">
+      <p class="section-no">
         01 — Philosophy
       </p>
 
@@ -1095,19 +1659,124 @@
         In the darkroom, it begins to <em>speak.</em>”
       </blockquote>
 
-      <p class="philosophy-description">
+      <p class="manifesto-copy">
         DAGER is a service-focused photo laboratory by Noir.
         We treat every roll as a collection of choices—light,
         timing, chemistry, and patience.
       </p>
     </section>
 
+    <!-- LOUIS DAGUERRE -->
+
+    <section class="daguerre-story" id="history">
+      <div class="history-index reveal">
+        <strong>1839</strong>
+
+        <div class="daguerre-real-portrait">
+          <!-- Upload louis-daguerre.jpg beside index.html -->
+
+          <img
+            src="louis-daguerre.jpg"
+            alt="Daguerreotype portrait of Louis-Jacques-Mandé Daguerre"
+            loading="lazy"
+          >
+        </div>
+
+        <span class="portrait-credit">
+          LOUIS-JACQUES-MANDÉ DAGUERRE<br>
+          1787 — 1851 · PUBLIC DOMAIN
+        </span>
+      </div>
+
+      <div class="daguerre-copy reveal">
+        <p class="section-no">
+          02 — The origin of the image
+        </p>
+
+        <h2>
+          Who was
+          <span class="daguerre-name">
+            Louis Daguerre?
+          </span>
+        </h2>
+
+        <p class="daguerre-intro">
+          Louis Daguerre was a French artist, theatrical designer,
+          and one of photography’s defining pioneers. Working first
+          with Nicéphore Niépce and later continuing their experiments,
+          he developed the daguerreotype—a process that transformed
+          light into a unique image on a silvered metal plate.
+        </p>
+
+        <div class="daguerre-timeline">
+          <div class="daguerre-year">
+            <strong>1826</strong>
+
+            <span>
+              Daguerre begins working with Nicéphore Niépce.
+            </span>
+          </div>
+
+          <div class="daguerre-year">
+            <strong>1839</strong>
+
+            <span>
+              The daguerreotype process is announced in Paris.
+            </span>
+          </div>
+
+          <div class="daguerre-year">
+            <strong>Today</strong>
+
+            <span>
+              His devotion to light and process continues to inspire.
+            </span>
+          </div>
+        </div>
+
+        <p class="name-note">
+          DAGER takes inspiration from Daguerre’s belief that an image
+          is created through both vision and process. It is not an
+          attempt to reproduce the past—it is a continuation of its
+          patience.
+        </p>
+      </div>
+    </section>
+
+    <!-- CINEMATIC PHOTO -->
+
+    <section
+      class="legacy-image reveal"
+      aria-label="The legacy of light"
+    >
+      <img
+        src="https://cdn.shopify.com/s/files/1/0702/5197/0627/files/vvvvvvv_1c2d81a5-6e2c-49fb-a93e-dbc631a74869.jpg?v=1787753321"
+        alt="Photography representing the legacy of analog image-making"
+        loading="lazy"
+      >
+
+      <div class="legacy-copy">
+        <div>
+          <p class="section-no">
+            A continuing legacy
+          </p>
+
+          <h2>
+            Light remembers<br>
+            what time forgets.
+          </h2>
+        </div>
+
+        <span>FRAME 02 / 36</span>
+      </div>
+    </section>
+
     <!-- SERVICES -->
 
     <section class="services" id="services">
       <div class="section-heading reveal">
-        <p class="section-number">
-          02 — Services
+        <p class="section-no">
+          03 — Services
         </p>
 
         <h2>
@@ -1118,8 +1787,8 @@
 
       <div class="service-grid">
         <article class="service-card reveal">
-          <span class="service-card-number">01</span>
-          <span class="service-icon">◉</span>
+          <span>01</span>
+          <b class="icon">◉</b>
 
           <h3>Colour development</h3>
 
@@ -1130,8 +1799,8 @@
         </article>
 
         <article class="service-card reveal">
-          <span class="service-card-number">02</span>
-          <span class="service-icon">◉</span>
+          <span>02</span>
+          <b class="icon">◉</b>
 
           <h3>Black &amp; white</h3>
 
@@ -1142,20 +1811,20 @@
         </article>
 
         <article class="service-card reveal">
-          <span class="service-card-number">03</span>
-          <span class="service-icon">◉</span>
+          <span>03</span>
+          <b class="icon">◉</b>
 
           <h3>High-resolution scans</h3>
 
           <p>
             Clean, balanced digital files made for sharing,
-            archiving, and printing.
+            archiving, and print.
           </p>
         </article>
 
         <article class="service-card reveal">
-          <span class="service-card-number">04</span>
-          <span class="service-icon">◉</span>
+          <span>04</span>
+          <b class="icon">◉</b>
 
           <h3>Personal colour work</h3>
 
@@ -1166,8 +1835,8 @@
         </article>
 
         <article class="service-card reveal">
-          <span class="service-card-number">05</span>
-          <span class="service-icon">◉</span>
+          <span>05</span>
+          <b class="icon">◉</b>
 
           <h3>Fine prints</h3>
 
@@ -1178,8 +1847,8 @@
         </article>
 
         <article class="service-card reveal">
-          <span class="service-card-number">06</span>
-          <span class="service-icon">◉</span>
+          <span>06</span>
+          <b class="icon">◉</b>
 
           <h3>Negative care</h3>
 
@@ -1191,12 +1860,105 @@
       </div>
     </section>
 
+    <!-- DEVELOPING ANIMATION -->
+
+    <section class="developing-process" id="process">
+      <div class="process-heading reveal">
+        <div>
+          <p class="section-no">
+            04 — Inside the process
+          </p>
+
+          <h2>
+            From latent<br>
+            to <em>visible.</em>
+          </h2>
+        </div>
+
+        <p>
+          In darkness, chemistry meets time. The hidden image
+          slowly appears—frame by frame, tone by tone.
+        </p>
+      </div>
+
+      <div class="chemical-stage">
+        <div class="film-window">
+          <div class="film-track">
+            <!-- FIRST SET -->
+
+            <div class="film-frame">
+              <img
+                src="canon-camera.jpg"
+                alt="Film frame developing"
+              >
+
+              <span class="film-number">01A</span>
+            </div>
+
+            <div class="film-frame">
+              <img
+                src="louis-daguerre.jpg"
+                alt="Louis Daguerre portrait developing"
+              >
+
+              <span class="film-number">02A</span>
+            </div>
+
+            <div class="film-frame">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0702/5197/0627/files/vvvvvvv_1c2d81a5-6e2c-49fb-a93e-dbc631a74869.jpg?v=1787753321"
+                alt="Analog photograph developing"
+              >
+
+              <span class="film-number">03A</span>
+            </div>
+
+            <!-- DUPLICATED SET FOR CONTINUOUS ANIMATION -->
+
+            <div class="film-frame">
+              <img
+                src="canon-camera.jpg"
+                alt="Film frame developing"
+              >
+
+              <span class="film-number">04A</span>
+            </div>
+
+            <div class="film-frame">
+              <img
+                src="louis-daguerre.jpg"
+                alt="Louis Daguerre portrait developing"
+              >
+
+              <span class="film-number">05A</span>
+            </div>
+
+            <div class="film-frame">
+              <img
+                src="https://cdn.shopify.com/s/files/1/0702/5197/0627/files/vvvvvvv_1c2d81a5-6e2c-49fb-a93e-dbc631a74869.jpg?v=1787753321"
+                alt="Analog photograph developing"
+              >
+
+              <span class="film-number">06A</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="process-status">
+        <span><strong>01</strong> DEVELOP</span>
+        <span><strong>02</strong> STOP</span>
+        <span><strong>03</strong> FIX</span>
+        <span><strong>04</strong> WASH</span>
+      </div>
+    </section>
+
     <!-- FORMATS -->
 
     <section class="formats reveal" id="formats">
       <div>
-        <p class="section-number">
-          03 — Formats
+        <p class="section-no">
+          05 — Formats
         </p>
 
         <h2>
@@ -1206,25 +1968,25 @@
       </div>
 
       <div class="format-list">
-        <div class="format-row">
+        <div>
           <span>01</span>
           <p>35 mm colour</p>
           <b>↗</b>
         </div>
 
-        <div class="format-row">
+        <div>
           <span>02</span>
           <p>35 mm B&amp;W</p>
           <b>↗</b>
         </div>
 
-        <div class="format-row">
+        <div>
           <span>03</span>
           <p>120 colour</p>
           <b>↗</b>
         </div>
 
-        <div class="format-row">
+        <div>
           <span>04</span>
           <p>120 B&amp;W</p>
           <b>↗</b>
@@ -1234,10 +1996,10 @@
 
     <!-- SELECTED WORK -->
 
-    <section class="selected-work" id="work">
+    <section class="work" id="work">
       <div class="section-heading reveal">
-        <p class="section-number">
-          04 — Selected work
+        <p class="section-no">
+          06 — Selected work
         </p>
 
         <h2>
@@ -1250,7 +2012,7 @@
         <figure class="photo reveal">
           <img
             src="canon-camera.jpg"
-            alt="Analog camera photographed against a dark background"
+            alt="Analog camera study"
           >
 
           <figcaption>
@@ -1262,7 +2024,7 @@
         <figure class="photo reveal">
           <img
             src="canon-camera.jpg"
-            alt="Detailed view of an analog camera"
+            alt="Analog camera detail"
           >
 
           <figcaption>
@@ -1274,7 +2036,7 @@
         <figure class="photo reveal">
           <img
             src="canon-camera.jpg"
-            alt="Vintage camera photography study"
+            alt="Film camera photograph"
           >
 
           <figcaption>
@@ -1284,7 +2046,7 @@
         </figure>
       </div>
 
-      <p class="gallery-note reveal">
+      <p class="work-note reveal">
         Hover over each frame to watch it develop.
       </p>
     </section>
@@ -1295,7 +2057,7 @@
       <div class="why-mark">D</div>
 
       <div>
-        <p class="section-number">
+        <p class="section-no">
           Why DAGER
         </p>
 
@@ -1315,8 +2077,8 @@
     <!-- CONTACT -->
 
     <section class="contact" id="contact">
-      <p class="section-number reveal">
-        05 — Contact
+      <p class="section-no reveal">
+        07 — Contact
       </p>
 
       <h2 class="reveal">
@@ -1324,11 +2086,11 @@
         <em>come to light.</em>
       </h2>
 
-      <p class="contact-description reveal">
+      <p class="reveal">
         Questions about formats, scanning, or your next roll?
       </p>
 
-      <!-- Replace the email address below with your own email -->
+      <!-- Replace the email address with your real email -->
 
       <a
         class="contact-button reveal"
@@ -1342,7 +2104,7 @@
   <!-- FOOTER -->
 
   <footer>
-    <div class="footer-logo">
+    <div>
       <strong>DAGER</strong>
       <span>PHOTO LAB · BY NOIR</span>
     </div>
@@ -1358,25 +2120,25 @@
 
   <script>
     /*
-      Opening darkroom animation
+      Opening animation
     */
 
     const intro = document.querySelector(".intro");
 
     window.setTimeout(function () {
-      intro.classList.add("is-hidden");
+      intro.classList.add("done");
     }, 1200);
 
     /*
-      Reveal sections when scrolling
+      Reveal elements while scrolling
     */
 
-    const revealObserver = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            revealObserver.unobserve(entry.target);
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
           }
         });
       },
@@ -1385,53 +2147,40 @@
       }
     );
 
-    document.querySelectorAll(".reveal").forEach(function (element) {
-      revealObserver.observe(element);
-    });
+    document.querySelectorAll(".reveal").forEach(
+      function (element) {
+        observer.observe(element);
+      }
+    );
 
     /*
-      Mobile navigation
+      Mobile menu
     */
 
-    const menuButton = document.getElementById("menuButton");
-    const navigation = document.getElementById("navigation");
-    const navigationLinks = navigation.querySelectorAll("a");
-
-    function closeMenu() {
-      navigation.classList.remove("is-open");
-      menuButton.classList.remove("is-open");
-      document.body.classList.remove("menu-open");
-
-      menuButton.setAttribute("aria-expanded", "false");
-      menuButton.setAttribute("aria-label", "Open menu");
-    }
+    const menuButton = document.querySelector(".menu");
+    const navigation = document.querySelector("#navigation");
 
     menuButton.addEventListener("click", function () {
-      const menuIsOpen = navigation.classList.toggle("is-open");
-
-      menuButton.classList.toggle("is-open", menuIsOpen);
-      document.body.classList.toggle("menu-open", menuIsOpen);
+      const menuIsOpen = navigation.classList.toggle("open");
 
       menuButton.setAttribute(
         "aria-expanded",
         menuIsOpen ? "true" : "false"
       );
-
-      menuButton.setAttribute(
-        "aria-label",
-        menuIsOpen ? "Close menu" : "Open menu"
-      );
     });
 
-    navigationLinks.forEach(function (link) {
-      link.addEventListener("click", closeMenu);
-    });
+    navigation.querySelectorAll("a").forEach(
+      function (link) {
+        link.addEventListener("click", function () {
+          navigation.classList.remove("open");
 
-    window.addEventListener("resize", function () {
-      if (window.innerWidth > 800) {
-        closeMenu();
+          menuButton.setAttribute(
+            "aria-expanded",
+            "false"
+          );
+        });
       }
-    });
+    );
   </script>
 </body>
 </html>
