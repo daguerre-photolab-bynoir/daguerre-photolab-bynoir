@@ -3062,6 +3062,375 @@
     <span>Hover to reveal colour</span>
   </div>
 </section>
+    <!-- FLOATING 3D FILM TRANSITION -->
+<section class="floating-film-section" aria-label="Floating photographic film">
+  <style>
+    .floating-film-section {
+      position: relative;
+      height: clamp(360px, 52vw, 650px);
+      overflow: hidden;
+      perspective: 1100px;
+      background:
+        radial-gradient(
+          circle at center,
+          rgba(184, 150, 98, 0.09),
+          transparent 42%
+        ),
+        #090c0d;
+      isolation: isolate;
+    }
+
+    .floating-film-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          90deg,
+          #090c0d 0%,
+          transparent 15%,
+          transparent 85%,
+          #090c0d 100%
+        ),
+        linear-gradient(
+          180deg,
+          #090c0d 0%,
+          transparent 22%,
+          transparent 78%,
+          #090c0d 100%
+        );
+    }
+
+    .floating-film-label {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      z-index: 3;
+      width: max-content;
+      transform: translate(-50%, -50%);
+      color: rgba(238, 233, 223, 0.8);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .floating-film-label span {
+      display: block;
+      margin-bottom: 13px;
+      color: #b89662;
+      font-family: monospace;
+      font-size: 9px;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+    }
+
+    .floating-film-label strong {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(24px, 3.6vw, 54px);
+      font-weight: normal;
+      letter-spacing: -0.035em;
+    }
+
+    .floating-film-ribbon {
+      position: absolute;
+      left: -20%;
+      display: flex;
+      width: max-content;
+      padding: 24px 0;
+      background: rgba(2, 3, 4, 0.96);
+      border-top: 1px solid rgba(184, 150, 98, 0.5);
+      border-bottom: 1px solid rgba(184, 150, 98, 0.5);
+      box-shadow:
+        0 35px 70px rgba(0, 0, 0, 0.65),
+        0 0 45px rgba(184, 150, 98, 0.05);
+      transform-style: preserve-3d;
+    }
+
+    .floating-film-ribbon::before,
+    .floating-film-ribbon::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 11px;
+      background:
+        radial-gradient(
+          circle,
+          #090c0d 3.8px,
+          transparent 4.3px
+        )
+        0 0 / 25px 11px repeat-x;
+      opacity: 0.95;
+    }
+
+    .floating-film-ribbon::before {
+      top: 6px;
+    }
+
+    .floating-film-ribbon::after {
+      bottom: 6px;
+    }
+
+    .floating-film-ribbon--front {
+      top: 42%;
+      z-index: 2;
+      transform:
+        rotateZ(-9deg)
+        rotateY(-15deg)
+        rotateX(7deg)
+        translateZ(90px);
+      animation: floatingFilmFront 26s linear infinite;
+    }
+
+    .floating-film-ribbon--back {
+      top: 19%;
+      z-index: 1;
+      opacity: 0.28;
+      filter: blur(0.7px);
+      transform:
+        rotateZ(11deg)
+        rotateY(18deg)
+        rotateX(-8deg)
+        translateZ(-170px)
+        scale(0.88);
+      animation: floatingFilmBack 36s linear infinite;
+    }
+
+    .floating-film-frame {
+      position: relative;
+      width: clamp(180px, 20vw, 330px);
+      height: clamp(115px, 13vw, 215px);
+      margin-right: 13px;
+      flex: 0 0 auto;
+      overflow: hidden;
+      border: 1px solid rgba(184, 150, 98, 0.42);
+      background: #050708;
+    }
+
+    .floating-film-frame img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      filter: grayscale(1) contrast(1.15) brightness(0.72);
+      transform: scale(1.05);
+      transition:
+        filter 0.9s ease,
+        transform 1.2s ease;
+    }
+
+    .floating-film-frame:nth-child(2n) img {
+      filter:
+        grayscale(1)
+        sepia(0.24)
+        contrast(1.2)
+        brightness(0.64);
+    }
+
+    .floating-film-frame:hover img {
+      filter: none;
+      transform: scale(1);
+    }
+
+    .floating-film-frame::after {
+      content: attr(data-number);
+      position: absolute;
+      right: 9px;
+      bottom: 7px;
+      color: rgba(238, 233, 223, 0.65);
+      font-family: monospace;
+      font-size: 7px;
+      letter-spacing: 0.2em;
+    }
+
+    @keyframes floatingFilmFront {
+      0% {
+        left: -22%;
+        transform:
+          rotateZ(-9deg)
+          rotateY(-15deg)
+          rotateX(7deg)
+          translateZ(90px);
+      }
+
+      50% {
+        transform:
+          rotateZ(-6deg)
+          rotateY(8deg)
+          rotateX(-3deg)
+          translateZ(135px);
+      }
+
+      100% {
+        left: -72%;
+        transform:
+          rotateZ(-9deg)
+          rotateY(-15deg)
+          rotateX(7deg)
+          translateZ(90px);
+      }
+    }
+
+    @keyframes floatingFilmBack {
+      0% {
+        left: -67%;
+        transform:
+          rotateZ(11deg)
+          rotateY(18deg)
+          rotateX(-8deg)
+          translateZ(-170px)
+          scale(0.88);
+      }
+
+      50% {
+        transform:
+          rotateZ(8deg)
+          rotateY(-6deg)
+          rotateX(4deg)
+          translateZ(-120px)
+          scale(0.88);
+      }
+
+      100% {
+        left: -17%;
+        transform:
+          rotateZ(11deg)
+          rotateY(18deg)
+          rotateX(-8deg)
+          translateZ(-170px)
+          scale(0.88);
+      }
+    }
+
+    @media (max-width: 800px) {
+      .floating-film-section {
+        height: 390px;
+      }
+
+      .floating-film-ribbon {
+        left: -60%;
+      }
+
+      .floating-film-ribbon--front {
+        top: 45%;
+      }
+
+      .floating-film-ribbon--back {
+        top: 18%;
+      }
+
+      .floating-film-frame {
+        width: 205px;
+        height: 130px;
+      }
+
+      .floating-film-label strong {
+        font-size: 29px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .floating-film-ribbon {
+        animation: none;
+      }
+    }
+  </style>
+
+  <div class="floating-film-label">
+    <span>DAGUERRE · 35 MM</span>
+    <strong>Every frame holds light.</strong>
+  </div>
+
+  <!-- Background ribbon -->
+  <div class="floating-film-ribbon floating-film-ribbon--back" aria-hidden="true">
+    <figure class="floating-film-frame" data-number="01">
+      <img src="selected-work-1.png" alt="">
+    </figure>
+
+    <figure class="floating-film-frame" data-number="02">
+      <img src="selected-work-2.png" alt="">
+    </figure>
+
+    <figure class="floating-film-frame" data-number="03">
+      <img src="selected-work-3.png" alt="">
+    </figure>
+
+    <figure class="floating-film-frame" data-number="04">
+      <img src="negative-inspection.png" alt="">
+    </figure>
+
+    <figure class="floating-film-frame" data-number="05">
+      <img src="film-washing.png" alt="">
+    </figure>
+
+    <figure class="floating-film-frame" data-number="06">
+      <img src="darkroom-developing.png" alt="">
+    </figure>
+
+    <figure class="floating-film-frame" data-number="07">
+      <img src="selected-work-1.png" alt="">
+    </figure>
+
+    <figure class="floating-film-frame" data-number="08">
+      <img src="selected-work-2.png" alt="">
+    </figure>
+  </div>
+
+  <!-- Foreground ribbon -->
+  <div class="floating-film-ribbon floating-film-ribbon--front">
+    <figure class="floating-film-frame" data-number="09">
+      <img
+        src="negative-inspection.png"
+        alt="Film negatives inspected under darkroom light"
+      >
+    </figure>
+
+    <figure class="floating-film-frame" data-number="10">
+      <img
+        src="selected-work-1.png"
+        alt="Rain-soaked city photographed on analog film"
+      >
+    </figure>
+
+    <figure class="floating-film-frame" data-number="11">
+      <img
+        src="selected-work-2.png"
+        alt="Black and white analog portrait"
+      >
+    </figure>
+
+    <figure class="floating-film-frame" data-number="12">
+      <img
+        src="selected-work-3.png"
+        alt="Misty landscape photographed on film"
+      >
+    </figure>
+
+    <figure class="floating-film-frame" data-number="13">
+      <img
+        src="darkroom-developing.png"
+        alt="Photographic print developing in a darkroom"
+      >
+    </figure>
+
+    <figure class="floating-film-frame" data-number="14">
+      <img
+        src="film-washing.png"
+        alt="Freshly developed film being washed"
+      >
+    </figure>
+
+    <figure class="floating-film-frame" data-number="15">
+      <img src="selected-work-1.png" alt="">
+    </figure>
+
+    <figure class="floating-film-frame" data-number="16">
+      <img src="selected-work-2.png" alt="">
+    </figure>
+  </div>
+</section>
     <!-- PRICE LIST -->
 <section class="price-list" id="prices">
   <div class="price-heading reveal">
