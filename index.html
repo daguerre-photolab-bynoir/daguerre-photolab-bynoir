@@ -2404,6 +2404,376 @@
 }
   </style>
 </head>
+  <!-- BOOK AN APPOINTMENT -->
+<style>
+  .appointment-button {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+    z-index: 900;
+    padding: 15px 22px;
+    border: 1px solid #b89662;
+    border-radius: 100px;
+    background: #b89662;
+    color: #090c0d;
+    font: 600 10px/1 Arial, sans-serif;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+    transition: 0.3s ease;
+  }
+
+  .appointment-button:hover {
+    background: #eee9df;
+    border-color: #eee9df;
+    transform: translateY(-3px);
+  }
+
+  .appointment-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(3, 5, 6, 0.88);
+    backdrop-filter: blur(12px);
+  }
+
+  .appointment-modal.is-open {
+    display: flex;
+  }
+
+  .appointment-window {
+    position: relative;
+    width: min(680px, 100%);
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: clamp(30px, 5vw, 60px);
+    border: 1px solid rgba(184, 150, 98, 0.45);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(184, 150, 98, 0.1),
+        transparent 34%
+      ),
+      #0b0e0f;
+    color: #eee9df;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+  }
+
+  .appointment-close {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    border: 0;
+    background: transparent;
+    color: #b89662;
+    font-size: 29px;
+    cursor: pointer;
+  }
+
+  .appointment-label {
+    margin: 0 0 15px;
+    color: #b89662;
+    font: 10px/1.4 monospace;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+  }
+
+  .appointment-title {
+    margin: 0 0 15px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(38px, 7vw, 68px);
+    font-weight: normal;
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+  }
+
+  .appointment-intro {
+    margin: 0 0 35px;
+    color: rgba(238, 233, 223, 0.57);
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.6;
+  }
+
+  .appointment-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .appointment-field {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .appointment-field--full {
+    grid-column: 1 / -1;
+  }
+
+  .appointment-field label {
+    color: rgba(238, 233, 223, 0.58);
+    font: 9px/1 Arial, sans-serif;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .appointment-field input,
+  .appointment-field select,
+  .appointment-field textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 0;
+    border: 0;
+    border-bottom: 1px solid rgba(238, 233, 223, 0.22);
+    border-radius: 0;
+    outline: none;
+    background: transparent;
+    color: #eee9df;
+    font: 15px/1.4 Arial, sans-serif;
+  }
+
+  .appointment-field select {
+    color-scheme: dark;
+  }
+
+  .appointment-field textarea {
+    min-height: 85px;
+    resize: vertical;
+  }
+
+  .appointment-field input:focus,
+  .appointment-field select:focus,
+  .appointment-field textarea:focus {
+    border-bottom-color: #b89662;
+  }
+
+  .appointment-submit {
+    grid-column: 1 / -1;
+    margin-top: 12px;
+    padding: 17px 25px;
+    border: 1px solid #b89662;
+    background: transparent;
+    color: #b89662;
+    font: 600 10px/1 Arial, sans-serif;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .appointment-submit:hover {
+    background: #b89662;
+    color: #090c0d;
+  }
+
+  @media (max-width: 650px) {
+    .appointment-button {
+      right: 16px;
+      bottom: 18px;
+      padding: 14px 17px;
+      font-size: 8px;
+    }
+
+    .appointment-form {
+      grid-template-columns: 1fr;
+    }
+
+    .appointment-field--full,
+    .appointment-submit {
+      grid-column: 1;
+    }
+  }
+</style>
+
+<button
+  class="appointment-button"
+  id="openAppointment"
+  type="button"
+>
+  Book appointment
+</button>
+
+<div
+  class="appointment-modal"
+  id="appointmentModal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="appointmentTitle"
+>
+  <div class="appointment-window">
+    <button
+      class="appointment-close"
+      id="closeAppointment"
+      type="button"
+      aria-label="Close appointment window"
+    >
+      ×
+    </button>
+
+    <p class="appointment-label">DAGUERRE · Photo Lab</p>
+
+    <h2 class="appointment-title" id="appointmentTitle">
+      Reserve an<br>appointment.
+    </h2>
+
+    <p class="appointment-intro">
+      Choose your film service and preferred visit time.
+      We will contact you to confirm your appointment.
+    </p>
+
+    <form class="appointment-form" id="appointmentForm">
+      <div class="appointment-field">
+        <label for="appointmentName">Your name</label>
+        <input
+          id="appointmentName"
+          name="name"
+          type="text"
+          required
+        >
+      </div>
+
+      <div class="appointment-field">
+        <label for="appointmentContact">Email or telephone</label>
+        <input
+          id="appointmentContact"
+          name="contact"
+          type="text"
+          required
+        >
+      </div>
+
+      <div class="appointment-field">
+        <label for="appointmentService">Service</label>
+        <select id="appointmentService" name="service" required>
+          <option value="">Choose a service</option>
+          <option>35mm Development — 1,000 AMD</option>
+          <option>35mm Scan — 1,000 AMD</option>
+          <option>Development + Scan — 2,000 AMD</option>
+          <option>120 Film Development — 2,500 AMD</option>
+          <option>Archive Scanning — from 700 AMD</option>
+          <option>Film Restoration — from 3,000 AMD</option>
+          <option>Exhibition Printing</option>
+        </select>
+      </div>
+
+      <div class="appointment-field">
+        <label for="appointmentFormat">Film format</label>
+        <select id="appointmentFormat" name="format">
+          <option>35mm</option>
+          <option>120 film</option>
+          <option>Old photograph or archive</option>
+          <option>Not sure</option>
+        </select>
+      </div>
+
+      <div class="appointment-field">
+        <label for="appointmentDate">Preferred date</label>
+        <input
+          id="appointmentDate"
+          name="date"
+          type="date"
+          required
+        >
+      </div>
+
+      <div class="appointment-field">
+        <label for="appointmentTime">Preferred time</label>
+        <input
+          id="appointmentTime"
+          name="time"
+          type="time"
+          required
+        >
+      </div>
+
+      <div class="appointment-field appointment-field--full">
+        <label for="appointmentMessage">Additional information</label>
+        <textarea
+          id="appointmentMessage"
+          name="message"
+          placeholder="Number of film rolls, special requests, or questions..."
+        ></textarea>
+      </div>
+
+      <button class="appointment-submit" type="submit">
+        Request appointment →
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const openButton = document.getElementById("openAppointment");
+    const closeButton = document.getElementById("closeAppointment");
+    const modal = document.getElementById("appointmentModal");
+    const form = document.getElementById("appointmentForm");
+
+    function openAppointmentWindow() {
+      modal.classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeAppointmentWindow() {
+      modal.classList.remove("is-open");
+      document.body.style.overflow = "";
+    }
+
+    openButton.addEventListener("click", openAppointmentWindow);
+    closeButton.addEventListener("click", closeAppointmentWindow);
+
+    modal.addEventListener("click", function (event) {
+      if (event.target === modal) {
+        closeAppointmentWindow();
+      }
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeAppointmentWindow();
+      }
+    });
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const data = new FormData(form);
+
+      const subject = "DAGUERRE appointment request — " +
+        data.get("service");
+
+      const body = [
+        "Hello DAGUERRE Photo Lab,",
+        "",
+        "I would like to request an appointment.",
+        "",
+        "Name: " + data.get("name"),
+        "Contact: " + data.get("contact"),
+        "Service: " + data.get("service"),
+        "Film format: " + data.get("format"),
+        "Preferred date: " + data.get("date"),
+        "Preferred time: " + data.get("time"),
+        "",
+        "Additional information:",
+        data.get("message") || "None",
+        "",
+        "Please contact me to confirm the appointment."
+      ].join("\n");
+
+      const labEmail = "YOUR-EMAIL@example.com";
+
+      window.location.href =
+        "mailto:" + labEmail +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+    });
+  })();
+</script>
 <body>
 
   <!-- OPENING ANIMATION -->
