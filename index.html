@@ -1896,6 +1896,125 @@
     padding-right: 14px;
   }
 }
+  /* PRICE LIST */
+.price-list {
+  padding: 13vh 7vw;
+  background: #0a0b0c;
+  color: #eee9df;
+}
+
+.price-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.price-heading h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(54px, 8vw, 125px);
+  line-height: 0.9;
+  font-weight: normal;
+}
+
+.price-heading h2 em {
+  color: #b89662;
+  font-weight: normal;
+}
+
+.currency-switcher {
+  display: flex;
+  padding: 5px;
+  border: 1px solid rgba(238, 233, 223, 0.25);
+}
+
+.currency-button {
+  padding: 13px 22px;
+  border: 0;
+  background: transparent;
+  color: #98938b;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+}
+
+.currency-button.active {
+  background: #b89662;
+  color: #0a0b0c;
+}
+
+.price-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid rgba(238, 233, 223, 0.2);
+  border-left: 1px solid rgba(238, 233, 223, 0.2);
+}
+
+.price-card {
+  position: relative;
+  min-height: 290px;
+  padding: 35px;
+  border-right: 1px solid rgba(238, 233, 223, 0.2);
+  border-bottom: 1px solid rgba(238, 233, 223, 0.2);
+  transition: background 0.4s ease;
+}
+
+.price-card:hover {
+  background: #151719;
+}
+
+.price-number {
+  color: #b89662;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+}
+
+.price-card h3 {
+  margin: 48px 0 15px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3vw, 48px);
+  font-weight: normal;
+}
+
+.price-card p {
+  max-width: 430px;
+  color: #98938b;
+  line-height: 1.7;
+}
+
+.price {
+  display: block;
+  margin-top: 32px;
+  color: #b89662;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 34px;
+}
+
+.price-note {
+  margin-top: 25px;
+  color: #77736d;
+  font-size: 10px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 800px) {
+  .price-heading {
+    display: block;
+  }
+
+  .currency-switcher {
+    width: max-content;
+    margin-top: 35px;
+  }
+
+  .price-grid {
+    grid-template-columns: 1fr;
+  }
+}
   </style>
 </head>
 <body>
@@ -2239,6 +2358,57 @@
   </div>
 
 </section>
+    <!-- PRICE LIST -->
+<section class="price-list" id="prices">
+  <div class="price-heading reveal">
+    <div>
+      <p class="section-number">05 — PRICE LIST</p>
+      <h2>
+        Simple, clear<br>
+        <em>pricing.</em>
+      </h2>
+    </div>
+
+    <div class="currency-switcher" aria-label="Choose currency">
+      <button class="currency-button active" data-currency="amd">AMD</button>
+      <button class="currency-button" data-currency="usd">USD</button>
+    </div>
+  </div>
+
+  <div class="price-grid">
+    <article class="price-card reveal">
+      <span class="price-number">01</span>
+      <h3>35mm Development</h3>
+      <p>Careful processing of one roll of 35mm film.</p>
+      <span class="price" data-amd="1,000 AMD" data-usd="$3">1,000 AMD</span>
+    </article>
+
+    <article class="price-card reveal">
+      <span class="price-number">02</span>
+      <h3>35mm Scan</h3>
+      <p>Digital scanning with natural colour and tonal balance.</p>
+      <span class="price" data-amd="1,000 AMD" data-usd="$3">1,000 AMD</span>
+    </article>
+
+    <article class="price-card reveal">
+      <span class="price-number">03</span>
+      <h3>Development + Scan</h3>
+      <p>Complete 35mm film development and digital scanning.</p>
+      <span class="price" data-amd="2,000 AMD" data-usd="$6">2,000 AMD</span>
+    </article>
+
+    <article class="price-card reveal">
+      <span class="price-number">04</span>
+      <h3>120 Film Development</h3>
+      <p>Careful processing of one roll of medium-format film.</p>
+      <span class="price" data-amd="2,500 AMD" data-usd="$7">2,500 AMD</span>
+    </article>
+  </div>
+
+  <p class="price-note">
+    USD prices are fixed estimates. Final payment may be confirmed in AMD.
+  </p>
+</section>
     <section class="developing-process" id="process">
 
   <div class="process-heading reveal">
@@ -2559,6 +2729,24 @@
         });
       }
     })();
+    const currencyButtons = document.querySelectorAll(".currency-button");
+const displayedPrices = document.querySelectorAll(".price");
+
+currencyButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const selectedCurrency = button.dataset.currency;
+
+    currencyButtons.forEach((item) => {
+      item.classList.remove("active");
+    });
+
+    button.classList.add("active");
+
+    displayedPrices.forEach((price) => {
+      price.textContent = price.dataset[selectedCurrency];
+    });
+  });
+});
   </script>
 
 </body>
