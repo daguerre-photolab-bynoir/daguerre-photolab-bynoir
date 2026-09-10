@@ -1677,6 +1677,52 @@
         display: none;
       }
     }
+  /* SAFARI FILM STRIP DISPLAY FIX */
+
+.chemical-stage {
+  isolation: isolate;
+  contain: paint;
+  overflow: hidden;
+}
+
+.film-window {
+  filter: none;
+  overflow: hidden;
+  transform: rotate(-1.3deg) translateZ(0);
+  -webkit-transform: rotate(-1.3deg) translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.film-track {
+  flex-wrap: nowrap;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.film-frame {
+  flex: 0 0 300px;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.film-frame img {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@media (max-width: 800px) {
+  .film-frame {
+    flex-basis: 235px;
+  }
+}
   </style>
 </head>
 <body>
